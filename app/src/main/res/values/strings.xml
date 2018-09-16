@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">lab1</string>
+    <string name="app_name">lab2</string>
+    <string name="edit_message">Input your name</string>
+    <string name="button_send">Say Hello</string>
+
 </resources>
