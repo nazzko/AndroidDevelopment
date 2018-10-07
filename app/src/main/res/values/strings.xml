@@ -6,5 +6,7 @@
     <string name="err_email">Неправильний емейл</string>
     <string name="err_pass">Пароль має містити велику і малу букви, цифри та спец. символи</string>
     <string name="err_cpass">Паролі не співпадають</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
 
 </resources>
