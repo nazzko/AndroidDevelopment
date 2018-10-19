@@ -10,4 +10,5 @@
     <string name="search">Search</string>
     <string name="games_amount">Games amount:</string>
     <string name="companies_amount">Companies amount:</string>
+    <string name="refresh">refresh</string>
 </resources>
