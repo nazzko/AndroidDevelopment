@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="amount_options">
+        <item>5</item>
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+    </string-array>
+
+    <string-array name="company_details_tabs">
+        <item>Description</item>
+        <item>Games</item>
+    </string-array>
+
+</resources>

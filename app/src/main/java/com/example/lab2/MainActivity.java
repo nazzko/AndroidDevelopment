@@ -1,87 +1,75 @@
 package com.example.lab2;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.Toast;
-import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationStyle;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.lab2.games.GamesFragment;
+import com.example.lab2.settings.SettingsFragment;
 
-    private EditText fname;
-    private EditText lname;
-    private EditText phone;
-    private EditText email;
-    private EditText pass;
-    private EditText cpass;
-    private int id = 1;
-    private Button submit, viewlist;
-    private AwesomeValidation awesomeValidation;
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private BottomNavigationView bottomNavigationView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
-        updateUI();
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+        ConnectivityManager connMgr = (ConnectivityManager) MainActivity.this
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            if (savedInstanceState == null) {
+                GamesFragment gamesFragment = new GamesFragment();
+                replaceFragment(gamesFragment);
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
+        }
     }
 
-    /**
-     * Called when the user taps the Send button
-     */
-    private void updateUI() {
-        fname = findViewById(R.id.firstName);
-        lname = findViewById(R.id.lastName);
-        phone = findViewById(R.id.phone);
-        email = findViewById(R.id.email);
-        pass = findViewById(R.id.password);
-        cpass = findViewById(R.id.confirmPassword);
-        submit = findViewById(R.id.submit);
-        viewlist = findViewById(R.id.viewlist);
-
-        String regexPhone = "[0-9]{10}";
-        String regexPassword = "(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*[~`!@#\\$%\\^&\\*\\(\\)\\-_\\+=\\{\\}\\[\\]\\|\\;:\"<>,./\\?]).{8,}";
-        awesomeValidation.addValidation(MainActivity.this, R.id.firstName, "[a-zA-Z\\s]+", R.string.err_fname);
-        awesomeValidation.addValidation(MainActivity.this, R.id.lastName, "[a-zA-Z\\s]+", R.string.err_lname);
-        awesomeValidation.addValidation(MainActivity.this, R.id.email, android.util.Patterns.EMAIL_ADDRESS, R.string.err_email);
-        awesomeValidation.addValidation(MainActivity.this, R.id.phone, regexPhone, R.string.err_phone);
-        awesomeValidation.addValidation(MainActivity.this, R.id.password, regexPassword, R.string.err_pass);
-        awesomeValidation.addValidation(MainActivity.this, R.id.confirmPassword, R.id.password, R.string.err_cpass);
-
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (awesomeValidation.validate()) {
-                    Toast.makeText(MainActivity.this, "Successful", Toast.LENGTH_SHORT).show();
-                    saveToPreferences();
-                } else {
-                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        viewlist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent activityChangeIntent = new Intent(MainActivity.this, UserDataActivity.class);
-                MainActivity.this.startActivity(activityChangeIntent);
-            }
-        });
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == bottomNavigationView.getSelectedItemId()) {
+            return true;
+        }
+        Fragment fragment;
+        switch (item.getItemId()) {
+            case R.id.nav_games:
+                fragment = new GamesFragment();
+                break;
+            case R.id.nav_favorite:
+                fragment = new FavoriteFragment();
+                break;
+            case R.id.nav_settings:
+                fragment = new SettingsFragment();
+                break;
+            default:
+                fragment = new Fragment();
+                break;
+        }
+        replaceFragment(fragment);
+        return true;
     }
 
-    private void saveToPreferences() {
-        SharedPreferences sharedPreferences = getSharedPreferences("userS", Context.MODE_PRIVATE);
-        id = sharedPreferences.getAll().size()/4 + 1;
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("name" + id, fname.getText().toString());
-        editor.putString("surname" + id, lname.getText().toString());
-        editor.putString("email" + id, email.getText().toString());
-        editor.putString("phone" + id, phone.getText().toString());
-        editor.apply();
+    private void replaceFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, fragment)
+                .commit();
     }
 }
