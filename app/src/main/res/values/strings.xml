@@ -1,12 +1,13 @@
 <resources>
-    <string name="app_name">lab2</string>
-    <string name="err_fname">Введіть ім\'я</string>
-    <string name="err_lname">Введіть прізвище</string>
-    <string name="err_phone">Введіть телефон</string>
-    <string name="err_email">Неправильний емейл</string>
-    <string name="err_pass">Пароль має містити велику і малу букви, цифри та спец. символи</string>
-    <string name="err_cpass">Паролі не співпадають</string>
-    <string name="email">Email</string>
-    <string name="phone">Phone</string>
+    <string name="app_name">GD</string>
 
+    <string name="games">Games</string>
+    <string name="favorite">Favorite</string>
+    <string name="settings">Settings</string>
+    <string name="error">Network error</string>
+    <string name="no_description">No description</string>
+    <string name="no_deck">No deck</string>
+    <string name="search">Search</string>
+    <string name="games_amount">Games amount:</string>
+    <string name="companies_amount">Companies amount:</string>
 </resources>
