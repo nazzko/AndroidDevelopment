@@ -32,19 +32,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         ButterKnife.bind(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        ConnectivityManager connMgr = (ConnectivityManager) MainActivity.this
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+//        ConnectivityManager connMgr = (ConnectivityManager) MainActivity.this
+//                .getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-        if (networkInfo != null && networkInfo.isConnected()) {
-            if (savedInstanceState == null) {
+//        if (networkInfo != null && networkInfo.isConnected()) {
+//            if (savedInstanceState == null) {
                 GamesFragment gamesFragment = new GamesFragment();
                 replaceFragment(gamesFragment);
             }
-        } else {
-            Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
-        }
-    }
+//        } else {
+//            Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
+//        }
+//    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

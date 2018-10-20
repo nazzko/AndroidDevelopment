@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lab2.PrefsConst;
@@ -32,6 +33,8 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.view.View.VISIBLE;
 
 public class GamesFragment extends Fragment implements GamesAdapter.Callback {
 
@@ -51,6 +54,8 @@ public class GamesFragment extends Fragment implements GamesAdapter.Callback {
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.net_error)
+    public TextView net_error;
 
     @Nullable
     @Override
@@ -107,7 +112,7 @@ public class GamesFragment extends Fragment implements GamesAdapter.Callback {
             public void onFailure(Call<GbObjectsListResponse> call, Throwable t) {
                 GamesFragment.this.call = call.clone();
                 if (!call.isCanceled()) {
-                    Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
+                    net_error.setVisibility(net_error.VISIBLE);
                 }
             }
         });
