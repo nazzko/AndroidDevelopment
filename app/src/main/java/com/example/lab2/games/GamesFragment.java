@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.example.lab2.PrefsConst;
 import com.example.lab2.R;
-import com.example.lab2.gamedetails.GameDetailsActivity;
+//import com.example.lab2.gamedetails.GameDetailsActivity;
 import com.example.lab2.network.GbObjectResponse;
 import com.example.lab2.network.GbObjectsListResponse;
 import com.example.lab2.network.GiantBombService;
@@ -61,8 +61,8 @@ public class GamesFragment extends Fragment implements GamesAdapter.Callback {
 
     @Override
     public void onGameClick(GbObjectResponse game) {
-        Intent intent = GameDetailsActivity.makeIntent(getContext(), game);
-        startActivity(intent);
+//        Intent intent = GameDetailsActivity.makeIntent(getContext(), game);
+//        startActivity(intent);
     }
 
     private void loadRandomGames() {
