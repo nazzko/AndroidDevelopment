@@ -52,9 +52,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.nav_games:
                 fragment = new GamesFragment();
                 break;
-            case R.id.nav_favorite:
-                fragment = new FavoriteFragment();
-                break;
+//            case R.id.nav_favorite:
+//                fragment = new FavoriteFragment();
+//                break;
             case R.id.nav_settings:
                 fragment = new SettingsFragment();
                 break;
