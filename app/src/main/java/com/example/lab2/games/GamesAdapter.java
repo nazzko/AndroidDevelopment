@@ -18,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> {
 
@@ -37,10 +38,11 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               GbObjectResponse game = games.get(holder.getAdapterPosition());
-               callback.onGameClick(game);
+                GbObjectResponse game = games.get(holder.getAdapterPosition());
+                callback.onGameClick(game);
             }
         });
+
         return holder;
     }
 
