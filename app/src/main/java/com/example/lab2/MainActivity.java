@@ -15,32 +15,36 @@ import android.widget.Toast;
 import com.example.lab2.games.GamesFragment;
 import com.example.lab2.settings.SettingsFragment;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private BottomNavigationView bottomNavigationView;
+    @BindView(R.id.bottomNavigation)
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bottomNavigationView = findViewById(R.id.bottomNavigation);
+        ButterKnife.bind(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        ConnectivityManager connMgr = (ConnectivityManager) MainActivity.this
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+//        ConnectivityManager connMgr = (ConnectivityManager) MainActivity.this
+//                .getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-        if (networkInfo != null && networkInfo.isConnected()) {
-            if (savedInstanceState == null) {
+//        if (networkInfo != null && networkInfo.isConnected()) {
+//            if (savedInstanceState == null) {
                 GamesFragment gamesFragment = new GamesFragment();
                 replaceFragment(gamesFragment);
             }
-        } else {
-            Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
-        }
-    }
+//        } else {
+//            Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
+//        }
+//    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

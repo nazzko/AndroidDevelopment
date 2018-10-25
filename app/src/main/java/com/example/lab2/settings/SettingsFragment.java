@@ -20,11 +20,19 @@ import com.example.lab2.R;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class SettingsFragment extends Fragment {
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor prefsEditor;
-    private Spinner spGamesAmount;
+
+    @BindView(R.id.spGamesAmount)
+    Spinner spGamesAmount;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Nullable
     @Override
@@ -37,9 +45,8 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         prefsEditor = prefs.edit();
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        ButterKnife.bind(this, view);
         toolbar.setTitle(R.string.settings);
-        spGamesAmount = view.findViewById(R.id.spGamesAmount);
         setSelections();
         setOnItemSelectedListeners();
     }
@@ -63,8 +70,10 @@ public class SettingsFragment extends Fragment {
                 int amountInt = Integer.parseInt(amountString);
                 prefsEditor.putInt(PrefsConst.SETTINGS_GAMES_AMOUNT, amountInt).apply();
             }
+
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
     }
 

@@ -8,12 +8,14 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lab2.PrefsConst;
@@ -26,22 +28,34 @@ import com.example.lab2.network.RestApi;
 
 import java.util.Random;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.view.View.VISIBLE;
 
 public class GamesFragment extends Fragment implements GamesAdapter.Callback {
 
     private static final String TAG = "33__";
     private static final int TOTAL_GAMES_COUNT = 64131;
-
     private GiantBombService service = RestApi.creteService(GiantBombService.class);
     private Random random = new Random();
     private GamesAdapter adapter = new GamesAdapter(this);
-    private RecyclerView rvGames;
+
     @Nullable
     private Call<GbObjectsListResponse> call;
     private int gamesAmount;
+
+    @BindView(R.id.rvGames)
+    RecyclerView rvGames;
+    @BindView(R.id.swipeContainer)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.net_error)
+    public TextView net_error;
 
     @Nullable
     @Override
@@ -51,12 +65,24 @@ public class GamesFragment extends Fragment implements GamesAdapter.Callback {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable final Bundle savedInstanceState) {
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        ButterKnife.bind(this, view);
         toolbar.setTitle(R.string.games);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         gamesAmount = preferences.getInt(PrefsConst.SETTINGS_GAMES_AMOUNT, 10);
         setupRecyclerView(view);
         loadRandomGames();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadRandomGames();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 2000);
+            }
+        });
     }
 
     @Override
@@ -86,14 +112,14 @@ public class GamesFragment extends Fragment implements GamesAdapter.Callback {
             public void onFailure(Call<GbObjectsListResponse> call, Throwable t) {
                 GamesFragment.this.call = call.clone();
                 if (!call.isCanceled()) {
-                    Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
+                    net_error.setVisibility(net_error.VISIBLE);
                 }
             }
         });
     }
 
     private void setupRecyclerView(View view) {
-        rvGames = view.findViewById(R.id.rvGames);
+        ButterKnife.bind(this, view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvGames.setLayoutManager(layoutManager);
         rvGames.setAdapter(adapter);
