@@ -55,6 +55,12 @@ public class GbObjectResponse {
 
         private String smallUrl;
 
+        private String superUrl;
+
+        public String getSuperUrl() {
+            return superUrl;
+        }
+
         public String getSmallUrl() {
             return smallUrl;
         }
