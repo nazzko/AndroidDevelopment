@@ -1,5 +1,6 @@
 package com.example.lab2.games;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -74,13 +75,7 @@ public class GamesFragment extends Fragment implements GamesAdapter.Callback {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadRandomGames();
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 2000);
+                loadRandomGames();
             }
         });
     }
@@ -105,6 +100,7 @@ public class GamesFragment extends Fragment implements GamesAdapter.Callback {
                 GbObjectsListResponse gbObjectsListResponse = response.body();
                 if (gbObjectsListResponse != null) {
                     adapter.replaceAll(gbObjectsListResponse.getResults());
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
@@ -113,6 +109,9 @@ public class GamesFragment extends Fragment implements GamesAdapter.Callback {
                 GamesFragment.this.call = call.clone();
                 if (!call.isCanceled()) {
                     net_error.setVisibility(net_error.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
+
+                    Toast.makeText(getView().getContext(), R.string.error, Toast.LENGTH_LONG).show();
                 }
             }
         });
