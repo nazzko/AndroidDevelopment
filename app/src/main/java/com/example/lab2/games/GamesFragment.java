@@ -68,6 +68,7 @@ public class GamesFragment extends Fragment implements GamesAdapter.Callback {
         gamesAmount = preferences.getInt(PrefsConst.SETTINGS_GAMES_AMOUNT, 10);
         setupRecyclerView(view);
         loadRandomGames();
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
