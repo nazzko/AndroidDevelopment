@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class GameDetailsActivity extends AppCompatActivity {
     private ViewGroup vgContent;
     private TextView tvDescription;
     @Nullable private Call<GbSingleObjectResponse> call;
+    private Button addToFavButton;
 
     public static Intent makeIntent(Context context, GbObjectResponse game) {
         return new Intent(context, GameDetailsActivity.class)
@@ -82,6 +84,7 @@ public class GameDetailsActivity extends AppCompatActivity {
 
         loadGameDetails(guid);
         pitchToZoom();
+        addToFavorites();
 
     }
 
@@ -155,5 +158,13 @@ public class GameDetailsActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
+    
+    private void addToFavorites() {
+        addToFavButton = findViewById(R.id.addToFavButton);
+        addToFavButton.setOnClickListener(new View.OnClickListener() {
 
+            public void onClick(View v) {
+                addToFavButton.setBackground(getResources().getDrawable(R.drawable.ic_star_black_24dp));            }
+        });
+    }
 }

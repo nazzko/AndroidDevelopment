@@ -4,6 +4,7 @@ import java.util.List;
 
 public class GbObjectResponse {
 
+    private long id;
     private String name;
     private String deck;
     private Image image;
@@ -12,6 +13,17 @@ public class GbObjectResponse {
     private String locationCountry;
     private String locationCity;
     private List<Game> developedGames;
+
+    public GbObjectResponse(long id, String name, String deck, String description) {
+        this.id = id;
+        this.name = name;
+        this.deck = deck;
+        this.description = description;
+    }
+
+    public long getId() {
+        return id;
+    }
 
     public String getLocationCountry() {
         return locationCountry;
