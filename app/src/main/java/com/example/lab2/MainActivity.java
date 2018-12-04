@@ -6,8 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.lab2.database.DatabaseHelper;
+import com.example.lab2.favorite.FavoriteFragment;
 import com.example.lab2.games.GamesFragment;
 import com.example.lab2.settings.SettingsFragment;
 
@@ -16,8 +19,9 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private DatabaseHelper db;
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.bottomNavigation)
     BottomNavigationView bottomNavigationView;
 
@@ -30,6 +34,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         GamesFragment gamesFragment = new GamesFragment();
         replaceFragment(gamesFragment);
+
+        db = DatabaseHelper.createInstance(this);
+     //   db.getFromDb();
     }
 
     @Override

@@ -1,7 +1,13 @@
 package com.example.lab2.gamedetails;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -20,29 +26,32 @@ import android.widget.Toast;
 
 import com.example.lab2.MainActivity;
 import com.example.lab2.R;
+import com.example.lab2.database.DatabaseHelper;
 import com.example.lab2.network.GbObjectResponse;
 import com.example.lab2.network.GbSingleObjectResponse;
 import com.example.lab2.network.GiantBombService;
 import com.example.lab2.network.RestApi;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GameDetailsActivity extends AppCompatActivity {
+public class GameDetailsActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String EXTRA_GAME_NAME = "EXTRA_GAME_NAME";
     private static final String EXTRA_GAME_DECK = "EXTRA_GAME_DECK";
     private static final String EXTRA_GAME_GUID = "EXTRA_GAME_GUID";
     private static final String EXTRA_GAME_PICTURE_URL = "EXTRA_GAME_PICTURE_URL";
-    private static final String EXTRA_GAME_PICTURE_URL_SUPER = "EXTRA_GAME_PICTURE_URL_SUPER";
 
     private GiantBombService service = RestApi.creteService(GiantBombService.class);
     private ProgressBar progressBar;
     private ViewGroup vgContent;
     private TextView tvDescription;
+    public ImageView favImage;
+
     @Nullable private Call<GbSingleObjectResponse> call;
     private Button addToFavButton;
 
@@ -52,8 +61,7 @@ public class GameDetailsActivity extends AppCompatActivity {
                 .putExtra(GameDetailsActivity.EXTRA_GAME_DECK, game.getDeck())
                 .putExtra(GameDetailsActivity.EXTRA_GAME_GUID, game.getGuid())
                 .putExtra(GameDetailsActivity.EXTRA_GAME_DECK, game.getDeck())
-                .putExtra(GameDetailsActivity.EXTRA_GAME_PICTURE_URL, game.getImage().getSmallUrl())
-                /*.putExtra(GameDetailsActivity.EXTRA_GAME_PICTURE_URL_SUPER, game.getImage().getSuperUrl())*/;
+                .putExtra(GameDetailsActivity.EXTRA_GAME_PICTURE_URL, game.getImage().getSmallUrl());
     }
 
     @Override
@@ -158,13 +166,26 @@ public class GameDetailsActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
-    
+
     private void addToFavorites() {
         addToFavButton = findViewById(R.id.addToFavButton);
-        addToFavButton.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                addToFavButton.setBackground(getResources().getDrawable(R.drawable.ic_star_black_24dp));            }
-        });
+        addToFavButton.setOnClickListener(this);
     }
+
+    @Override
+    public void onClick(View view) {
+        favImage = findViewById(R.id.ivPicture);
+
+        Intent intent = getIntent();
+
+        String gameName = intent.getStringExtra(EXTRA_GAME_NAME);
+        String gameDeck = intent.getStringExtra(EXTRA_GAME_DECK);
+        String gamePicUrl = intent.getStringExtra(EXTRA_GAME_PICTURE_URL);
+        Bitmap image = ((BitmapDrawable)favImage.getDrawable()).getBitmap();
+
+        DatabaseHelper databaseHelper = DatabaseHelper.createInstance(this);
+        databaseHelper.insertValues(gameName, gameDeck, gameDeck, image);
+        addToFavButton.setBackground(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+    }
+
 }
