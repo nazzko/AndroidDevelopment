@@ -60,5 +60,5 @@ deploy:
   file_glob: true
   file: /home/travis/build/nazzko/AndroidDevelopment/app/build/outputs/apk/debug/app-debug.apk
   on:
-    repo: romanvit13/mobile--android
+    repo: nazzko/AndroidDevelopment
     all_branches: true
