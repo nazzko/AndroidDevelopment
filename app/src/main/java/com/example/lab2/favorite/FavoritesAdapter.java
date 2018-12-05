@@ -2,7 +2,6 @@ package com.example.lab2.favorite;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lab2.R;
-import com.example.lab2.games.GamesAdapter;
 import com.example.lab2.network.FavGame;
-import com.example.lab2.network.GbObjectResponse;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +19,11 @@ import butterknife.ButterKnife;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
     private List<FavGame> favgames = new ArrayList<>();
+    private final Callback callback;
+
+    public FavoritesAdapter(Callback callback) {
+        this.callback = callback;
+    }
 
     @NonNull
     @Override
@@ -33,8 +34,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //open description on favorite game click
-            }
+                FavGame game = favgames.get(holder.getAdapterPosition());
+                callback.onGameClick(game);}
         });
 
         return holder;
@@ -52,11 +53,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     @Override
     public int getItemCount() {
         return favgames.size();
-    }
-
-    public void addAll(List<FavGame> gamesToAdd) {
-        favgames.addAll(gamesToAdd);
-        notifyDataSetChanged();
     }
 
     public void replaceAll(List<FavGame> gamesToReplace) {
@@ -82,4 +78,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
             ButterKnife.bind(this, itemView);
         }
     }
+
+    public interface Callback {
+        void onGameClick(FavGame game);
+    }
+
 }

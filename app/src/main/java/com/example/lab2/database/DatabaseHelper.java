@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteQuery;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -14,13 +13,9 @@ import android.widget.TextView;
 import com.example.lab2.R;
 import com.example.lab2.gamedetails.GameDetailsActivity;
 import com.example.lab2.network.FavGame;
-import com.example.lab2.network.GbObjectResponse;
-import com.squareup.picasso.RequestCreator;
 
 import java.io.ByteArrayOutputStream;
-import java.sql.Blob;
 import java.util.ArrayList;
-import java.util.jar.Attributes;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -28,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int SCHEMA = 1;
     static final String TABLE = "Favorites";
 
-    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_ID = "guid";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_DECK = "deck";
     public static final String COLUMN_DESCRIPTION = "description";
@@ -36,6 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public TextView recordId;
 
     private static DatabaseHelper databaseHelper;
+    public DatabaseHelper databaseHelper2;
 
     public static DatabaseHelper createInstance(Context context){
         if (databaseHelper == null){
@@ -50,21 +46,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, SCHEMA);
     }
 
-    // onCreate did not work
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-
-    }
-
     protected void createDatabase(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS "+TABLE);
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" + COLUMN_ID
-                + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME
+                + " TEXT PRIMARY KEY," + COLUMN_NAME
                 + " TEXT, " + COLUMN_DECK + " TEXT, " + COLUMN_DESCRIPTION + " TEXT, " + COLUMN_IMAGE + " BLOB );");
         db.close();
     }
 
+
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion,  int newVersion) {
@@ -91,7 +86,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0,blob.length);
 
                 Log.i("description", description);
-                games.add(new FavGame(id, name, deck, description, bmp));
+                games.add(new FavGame(id, name, deck,description, bmp));
 
             }
             while (cursor.moveToNext());
@@ -114,22 +109,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long idRecord = db.insert(TABLE, null, values);
 
         Log.i("recordId", String.valueOf(idRecord));
-       // GameDetailsActivity gameDetailsActivity = new GameDetailsActivity();
-      //  gameDetailsActivity.placeId(idRecord);
 
         db.close();
     }
 
-    public void deleteValue() {
+    public void deleteValue(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM "+ TABLE);
+        db.execSQL("DELETE FROM "+ TABLE + " WHERE " + COLUMN_ID + id);
         db.close();
     }
-
-//    public void placeId(long newId) {
-//        recordId = findViewById(R.id.record_id);
-//        recordId.setText(String.valueOf(newId));
-//        Log.i("OOOOOOOOOOOOOOOOOOOOOOO", String.valueOf(newId));
-//    }
 
 }

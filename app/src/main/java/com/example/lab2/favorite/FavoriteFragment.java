@@ -1,5 +1,6 @@
 package com.example.lab2.favorite;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,14 +14,16 @@ import android.view.ViewGroup;
 
 import com.example.lab2.R;
 import com.example.lab2.database.DatabaseHelper;
+import com.example.lab2.favgamedetails.FavGameDetailsActivity;
+import com.example.lab2.network.FavGame;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FavoriteFragment extends Fragment {
+public class FavoriteFragment extends Fragment implements FavoritesAdapter.Callback{
 
     private DatabaseHelper db;
-    private FavoritesAdapter favoritesAdapter = new FavoritesAdapter();
+    private FavoritesAdapter favoritesAdapter = new FavoritesAdapter(this);
 
     @BindView(R.id.rvGames)
     RecyclerView rvGames;
@@ -41,15 +44,12 @@ public class FavoriteFragment extends Fragment {
         loadRandomGames();
     }
 
-
-
-/*
     @Override
-    public void onGameClick(GbObjectResponse game) {
-        Intent intent = GameDetailsActivity.makeIntent(getContext(), game);
+    public void onGameClick(FavGame game) {
+        Intent intent = FavGameDetailsActivity.makeFavIntent(getContext(), game);
         startActivity(intent);
     }
-*/
+
 
     private void loadRandomGames() {
         db = DatabaseHelper.createInstance(getContext());

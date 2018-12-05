@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         replaceFragment(gamesFragment);
 
         db = DatabaseHelper.createInstance(this);
-     //   db.getFromDb();
     }
 
     @Override

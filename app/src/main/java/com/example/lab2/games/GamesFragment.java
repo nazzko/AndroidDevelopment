@@ -36,6 +36,7 @@ import retrofit2.Response;
 
 public class GamesFragment extends Fragment implements GamesAdapter.Callback {
 
+    private static final String EXTRA_GAME_GUID = "EXTRA_GAME_GUID";
     private static final int TOTAL_GAMES_COUNT = 64131;
     private GiantBombService service = RestApi.creteService(GiantBombService.class);
     private Random random = new Random();
@@ -86,6 +87,7 @@ public class GamesFragment extends Fragment implements GamesAdapter.Callback {
     @Override
     public void onGameClick(GbObjectResponse game) {
         Intent intent = GameDetailsActivity.makeIntent(getContext(), game);
+        intent.putExtra(EXTRA_GAME_GUID, game.getGuid());
         startActivity(intent);
     }
 

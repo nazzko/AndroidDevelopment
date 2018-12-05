@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.example.lab2.MainActivity;
 import com.example.lab2.R;
 import com.example.lab2.database.DatabaseHelper;
+import com.example.lab2.network.FavGame;
 import com.example.lab2.network.GbObjectResponse;
 import com.example.lab2.network.GbSingleObjectResponse;
 import com.example.lab2.network.GiantBombService;
@@ -44,8 +45,11 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
     private static final String EXTRA_GAME_NAME = "EXTRA_GAME_NAME";
     private static final String EXTRA_GAME_DECK = "EXTRA_GAME_DECK";
     private static final String EXTRA_GAME_GUID = "EXTRA_GAME_GUID";
+    private static final String EXTRA_GAME_DESCRIPTION = "EXTRA_GAME_DESCRIPTION";
     private static final String EXTRA_GAME_PICTURE_URL = "EXTRA_GAME_PICTURE_URL";
+    private static final Bitmap EXTRA_GAME_PICTURE = null;
 
+    private String gameId = "";
     private GiantBombService service = RestApi.creteService(GiantBombService.class);
     private ProgressBar progressBar;
     private ViewGroup vgContent;
@@ -60,7 +64,6 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
                 .putExtra(GameDetailsActivity.EXTRA_GAME_NAME, game.getName())
                 .putExtra(GameDetailsActivity.EXTRA_GAME_DECK, game.getDeck())
                 .putExtra(GameDetailsActivity.EXTRA_GAME_GUID, game.getGuid())
-                .putExtra(GameDetailsActivity.EXTRA_GAME_DECK, game.getDeck())
                 .putExtra(GameDetailsActivity.EXTRA_GAME_PICTURE_URL, game.getImage().getSmallUrl());
     }
 
@@ -73,6 +76,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         progressBar = findViewById(R.id.progressBar);
 
         Intent intent = getIntent();
+        gameId = intent.getStringExtra(EXTRA_GAME_GUID);
 
         String gameName = intent.getStringExtra(EXTRA_GAME_NAME);
         String gamePicUrl = intent.getStringExtra(EXTRA_GAME_PICTURE_URL);
@@ -175,16 +179,17 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         favImage = findViewById(R.id.ivPicture);
+        tvDescription = findViewById(R.id.tvDescription);
 
         Intent intent = getIntent();
 
         String gameName = intent.getStringExtra(EXTRA_GAME_NAME);
         String gameDeck = intent.getStringExtra(EXTRA_GAME_DECK);
-        String gamePicUrl = intent.getStringExtra(EXTRA_GAME_PICTURE_URL);
+        String description = tvDescription.getText().toString();
         Bitmap image = ((BitmapDrawable)favImage.getDrawable()).getBitmap();
 
         DatabaseHelper databaseHelper = DatabaseHelper.createInstance(this);
-        databaseHelper.insertValues(gameName, gameDeck, gameDeck, image);
+        databaseHelper.insertValues(gameName, gameDeck, description, image);
         addToFavButton.setBackground(getResources().getDrawable(R.drawable.ic_star_black_24dp));
     }
 
