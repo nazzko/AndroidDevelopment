@@ -1,64 +1,52 @@
 language: android
 jdk: oraclejdk8
-sudo: false
-
 env:
   global:
     - ANDROID_API_LEVEL=28
-    - ANDROID_EMULATOR_LEVEL=18
     - ANDROID_BUILD_TOOLS_VERSION=28.0.3
-    - ADB_INSTALL_TIMEOUT=20
-    - ANDROID_ABI=armeabi-v7a
-    - ANDROID_TAG=google_apis
-    - QEMU_AUDIO_DRV=none
+
+before_cache:
+  # Do not cache a few Gradle files/directories (see https://docs.travis-ci.com/user/languages/java/#Caching)
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    # Gradle dependencies
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
+    # Android build cache (see http://tools.android.com/tech-docs/build-cache)
+    - $HOME/.android/build-cache
 
 android:
   components:
     - tools
     - platform-tools
-    - tools
+    # The BuildTools version used by your project
     - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+    # The SDK version used to compile your project
     - android-$ANDROID_API_LEVEL
-    - android-$ANDROID_EMULATOR_LEVEL
-    - extra-android-support
+    # Additional components
+    - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
-    - sys-img-$ANDROID_ABI-google_apis-$ANDROID_EMULATOR_LEVEL
-
-licenses:
-  - android-sdk-preview-license-.+
-  - android-sdk-license-.+
-  - google-gdk-license-.+
-
-cache:
-  directories:
-  - "$HOME/.gradle/caches/"
-  - "$HOME/.gradle/wrapper/"
-  - "$HOME/.android/build-cache"
-
-before_install:
-  - chmod +x gradlew
-  - mkdir "$ANDROID_HOME/licenses" || true
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-
-before_script:
-  - mkdir -p build/reports
-  - ./gradlew clean assembleDebug test lint
-
-script:
-  - TERM=dumb ./gradlew assembleDebug
-
-after_failure:
-  - cat $TRAVIS_BUILD_DIR/app/build/reports/lint-results.xml
+    - addon-google_apis-google-$ANDROID_API_LEVEL
 
 deploy:
   provider: releases
+  api_key: "$GH_TOKEN"
+  file: "app/build/outputs/apk/debug/app-debug.apk"
   skip_cleanup: true
-  overwrite: true
-  api_key: $GITHUB_API_KEY
-  file_glob: true
-  file: /home/travis/build/nazzko/AndroidDevelopment/app/build/outputs/apk/debug/app-debug.apk
   on:
-    repo: nazzko/AndroidDevelopment
+    tags: false
     all_branches: true
+
+before_script:
+  # Prepare pre-accepted licenses to not be promted at installation
+  - echo yes | sdkmanager "build-tools;27.0.3"
+  - chmod +x gradlew
+
+script:
+  - ./gradlew build check --stacktrace
+  - ./gradlew assembleDebug
