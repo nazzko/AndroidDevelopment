@@ -5,14 +5,14 @@ import android.graphics.Bitmap;
 import java.sql.Blob;
 
 public class FavGame {
-    private long id;
+    private String guid;
     private String name;
     private String deck;
     private String description;
     private Bitmap image;
 
-    public FavGame(long id, String name, String deck, String description, Bitmap image) {
-        this.id = id;
+    public FavGame(String guid, String name, String deck, String description, Bitmap image) {
+        this.guid = guid;
         this.name = name;
         this.deck = deck;
         this.description = description;
@@ -20,12 +20,12 @@ public class FavGame {
     }
 
 
-    public long getId() {
-        return id;
+    public String getId() {
+        return guid;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(String guid) {
+        this.guid = guid;
     }
 
     public String getName() {

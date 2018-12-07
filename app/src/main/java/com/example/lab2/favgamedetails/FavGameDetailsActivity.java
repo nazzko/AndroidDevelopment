@@ -39,6 +39,7 @@ public class FavGameDetailsActivity extends AppCompatActivity implements View.On
 
     public static Intent makeFavIntent(Context context, FavGame game) {
         return new Intent(context, FavGameDetailsActivity.class)
+                .putExtra(FavGameDetailsActivity.EXTRA_GAME_GUID, game.getId())
                 .putExtra(FavGameDetailsActivity.EXTRA_GAME_NAME, game.getName())
                 .putExtra(FavGameDetailsActivity.EXTRA_GAME_DECK, game.getDeck())
                 .putExtra(FavGameDetailsActivity.EXTRA_GAME_DESCRIPTION, game.getDescription());
@@ -111,10 +112,12 @@ public class FavGameDetailsActivity extends AppCompatActivity implements View.On
     @Override
     public void onClick(View view) {
         favImage = findViewById(R.id.ivPicture);
-        TextView recordId = findViewById(R.id.record_id);
+
+        Intent intent = getIntent();
+        String guid = intent.getStringExtra(EXTRA_GAME_GUID);
 
         DatabaseHelper databaseHelper = DatabaseHelper.createInstance(this);
-        databaseHelper.deleteValue(recordId.getText().toString());
-        addToFavButton.setBackground(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+        databaseHelper.deleteValue(guid);
+        addToFavButton.setBackground(getResources().getDrawable(R.drawable.ic_star_border_black_24dp));
     }
 }

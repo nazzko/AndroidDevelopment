@@ -183,13 +183,14 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
 
         Intent intent = getIntent();
 
+        String guid = intent.getStringExtra(EXTRA_GAME_GUID);
         String gameName = intent.getStringExtra(EXTRA_GAME_NAME);
         String gameDeck = intent.getStringExtra(EXTRA_GAME_DECK);
         String description = tvDescription.getText().toString();
         Bitmap image = ((BitmapDrawable)favImage.getDrawable()).getBitmap();
 
         DatabaseHelper databaseHelper = DatabaseHelper.createInstance(this);
-        databaseHelper.insertValues(gameName, gameDeck, description, image);
+        databaseHelper.insertValues(guid, gameName, gameDeck, description, image);
         addToFavButton.setBackground(getResources().getDrawable(R.drawable.ic_star_black_24dp));
     }
 

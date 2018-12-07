@@ -71,14 +71,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<FavGame> games = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(TABLE,
-                  new String[]{COLUMN_NAME, COLUMN_DECK, COLUMN_DESCRIPTION, COLUMN_IMAGE},
+                  new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_DECK, COLUMN_DESCRIPTION, COLUMN_IMAGE},
                 null,null,null,null, null);
 
-        if(cursor.moveToFirst()){
+        if(cursor.moveToLast()){
             do{
-                int columnIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_ID);
-
-                long id = cursor.getLong(0);
+                String guid = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
                 String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NAME));
                 String deck = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DECK));
                 String description = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DESCRIPTION));
@@ -86,21 +84,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0,blob.length);
 
                 Log.i("description", description);
-                games.add(new FavGame(id, name, deck,description, bmp));
+                games.add(new FavGame(guid, name, deck,description, bmp));
 
             }
-            while (cursor.moveToNext());
+            while (cursor.moveToPrevious());
         }
         cursor.close();
 
         return games;
     }
 
-    public void insertValues(String name, String deck, String  description, Bitmap image){
+    public void insertValues(String guid,String name, String deck, String  description, Bitmap image){
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 100,out);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(COLUMN_ID, guid);
         values.put(COLUMN_NAME, name);
         values.put(COLUMN_DECK, deck);
         values.put(COLUMN_DESCRIPTION, description);
@@ -113,10 +112,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteValue(String id) {
+    public void deleteValue(String guid) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM "+ TABLE + " WHERE " + COLUMN_ID + id);
+        db.execSQL("DELETE FROM "+ TABLE + " WHERE " + COLUMN_ID + " =? ", new String[]{guid});
+        Log.i("DEleted", String.valueOf(guid));
         db.close();
     }
 
+    public void checkExist(String guid){
+        Cursor cursor = null;
+        SQLiteDatabase db = this.getWritableDatabase();
+        String sql ="SELECT " + COLUMN_ID + " FROM " + TABLE + " WHERE "+ COLUMN_ID +" =" + guid;
+        cursor= db.rawQuery(sql,null);
+
+        if(cursor.getCount()>0){
+            //PID Found
+        }else{
+            //PID Not Found
+        }
+        cursor.close();
+    }
 }
