@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private DatabaseHelper db;
+    private DatabaseHelper databaseHelper;
 
     private static final String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.bottomNavigation)
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         GamesFragment gamesFragment = new GamesFragment();
         replaceFragment(gamesFragment);
 
-        db = DatabaseHelper.createInstance(this);
+        databaseHelper = DatabaseHelper.createInstance(this);
     }
 
     @Override

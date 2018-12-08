@@ -21,24 +21,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "gameDB";
     private static final int SCHEMA = 1;
-    static final String TABLE = "Favorites";
-
-    public static final String COLUMN_ID = "guid";
-    public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_DECK = "deck";
-    public static final String COLUMN_DESCRIPTION = "description";
-    public static final String COLUMN_IMAGE = "image";
-    public TextView recordId;
+    private static final String TABLE = "Favorites";
+    private static final String COLUMN_ID = "guid";
+    private static final String COLUMN_NAME = "name";
+    private static final String COLUMN_DECK = "deck";
+    private static final String COLUMN_DESCRIPTION = "description";
+    private static final String COLUMN_IMAGE = "image";
 
     private static DatabaseHelper databaseHelper;
-    public DatabaseHelper databaseHelper2;
 
     public static DatabaseHelper createInstance(Context context){
         if (databaseHelper == null){
             databaseHelper = new DatabaseHelper(context);
             databaseHelper.createDatabase();
         }
-
         return databaseHelper;
     }
 
@@ -46,7 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, SCHEMA);
     }
 
-    protected void createDatabase(){
+    private void createDatabase(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS "+TABLE);
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + " (" + COLUMN_ID
@@ -55,10 +51,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
     }
 
     @Override
@@ -67,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public ArrayList<FavGame> getFromDb(){
+    public ArrayList<FavGame> getFavoriteGames(){
         ArrayList<FavGame> games = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(TABLE,
@@ -85,51 +79,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 Log.i("description", description);
                 games.add(new FavGame(guid, name, deck,description, bmp));
-
             }
             while (cursor.moveToPrevious());
         }
         cursor.close();
-
         return games;
     }
 
-    public void insertValues(String guid,String name, String deck, String  description, Bitmap image){
+    public void saveGame(final FavGame game){
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100,out);
+        game.getImage().compress(Bitmap.CompressFormat.PNG, 100,out);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, guid);
-        values.put(COLUMN_NAME, name);
-        values.put(COLUMN_DECK, deck);
-        values.put(COLUMN_DESCRIPTION, description);
+        values.put(COLUMN_ID, game.getId());
+        values.put(COLUMN_NAME, game.getName());
+        values.put(COLUMN_DECK, game.getDeck());
+        values.put(COLUMN_DESCRIPTION, game.getDescription());
         values.put(COLUMN_IMAGE, out.toByteArray());
-
         long idRecord = db.insert(TABLE, null, values);
-
         Log.i("recordId", String.valueOf(idRecord));
-
         db.close();
     }
 
-    public void deleteValue(String guid) {
+    public void removeGame(String guid) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+ TABLE + " WHERE " + COLUMN_ID + " =? ", new String[]{guid});
-        Log.i("DEleted", String.valueOf(guid));
+        Log.i("Deleted", String.valueOf(guid));
         db.close();
     }
 
-    public void checkExist(String guid){
+    public boolean checkExist(String guid){
         Cursor cursor = null;
         SQLiteDatabase db = this.getWritableDatabase();
         String sql ="SELECT " + COLUMN_ID + " FROM " + TABLE + " WHERE "+ COLUMN_ID +" =" + guid;
         cursor= db.rawQuery(sql,null);
 
         if(cursor.getCount()>0){
-            //PID Found
+            cursor.close();
+            return true;
         }else{
-            //PID Not Found
+            cursor.close();
+            return false;
         }
-        cursor.close();
     }
 }

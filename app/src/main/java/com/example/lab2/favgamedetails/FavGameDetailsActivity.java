@@ -32,10 +32,8 @@ public class FavGameDetailsActivity extends AppCompatActivity implements View.On
     private static final String EXTRA_GAME_PICTURE_URL = "EXTRA_GAME_PICTURE_URL";
     private static final Bitmap EXTRA_GAME_PICTURE = null;
 
-    private ProgressBar progressBar;
-    private ViewGroup vgContent;
     private Button addToFavButton;
-    public ImageView favImage;
+    private ImageView favImage;
 
     public static Intent makeFavIntent(Context context, FavGame game) {
         return new Intent(context, FavGameDetailsActivity.class)
@@ -49,8 +47,6 @@ public class FavGameDetailsActivity extends AppCompatActivity implements View.On
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_details);
-        vgContent = findViewById(R.id.vgContent);
-        progressBar = findViewById(R.id.progressBar);
 
         Intent intent = getIntent();
 
@@ -71,7 +67,7 @@ public class FavGameDetailsActivity extends AppCompatActivity implements View.On
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-      //  ivPicture.setImageBitmap(game.getImage());
+//        ivPicture.setImageBitmap(game.getImage());
 
 //        pitchToZoom();
         addToFavorites();
@@ -117,7 +113,7 @@ public class FavGameDetailsActivity extends AppCompatActivity implements View.On
         String guid = intent.getStringExtra(EXTRA_GAME_GUID);
 
         DatabaseHelper databaseHelper = DatabaseHelper.createInstance(this);
-        databaseHelper.deleteValue(guid);
+        databaseHelper.removeGame(guid);
         addToFavButton.setBackground(getResources().getDrawable(R.drawable.ic_star_border_black_24dp));
     }
 }

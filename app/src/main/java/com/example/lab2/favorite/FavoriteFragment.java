@@ -53,7 +53,7 @@ public class FavoriteFragment extends Fragment implements FavoritesAdapter.Callb
 
     private void loadRandomGames() {
         db = DatabaseHelper.createInstance(getContext());
-        favoritesAdapter.replaceAll(db.getFromDb());
+        favoritesAdapter.replaceAll(db.getFavoriteGames());
     }
 
     private void setupRecyclerView(View view) {

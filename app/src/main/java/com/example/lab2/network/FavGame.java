@@ -5,11 +5,11 @@ import android.graphics.Bitmap;
 import java.sql.Blob;
 
 public class FavGame {
-    private String guid;
-    private String name;
-    private String deck;
-    private String description;
-    private Bitmap image;
+    private final String guid;
+    private final String name;
+    private final String deck;
+    private final String description;
+    private final Bitmap image;
 
     public FavGame(String guid, String name, String deck, String description, Bitmap image) {
         this.guid = guid;
@@ -19,45 +19,24 @@ public class FavGame {
         this.image = image;
     }
 
-
     public String getId() {
         return guid;
-    }
-
-    public void setId(String guid) {
-        this.guid = guid;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDeck() {
         return deck;
-    }
-
-    public void setDeck(String deck) {
-        this.deck = deck;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Bitmap getImage() {
         return image;
-    }
-
-    public void setImage(Bitmap image) {
-        this.image = image;
     }
 
     @Override

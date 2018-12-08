@@ -1,20 +1,15 @@
 package com.example.lab2.gamedetails;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +19,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lab2.MainActivity;
 import com.example.lab2.R;
 import com.example.lab2.database.DatabaseHelper;
 import com.example.lab2.network.FavGame;
@@ -34,7 +28,6 @@ import com.example.lab2.network.GiantBombService;
 import com.example.lab2.network.RestApi;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,9 +68,14 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         vgContent = findViewById(R.id.vgContent);
         progressBar = findViewById(R.id.progressBar);
 
+        setAttributes();
+        pitchToZoom();
+        addToFavorites();
+    }
+
+    private void setAttributes(){
         Intent intent = getIntent();
         gameId = intent.getStringExtra(EXTRA_GAME_GUID);
-
         String gameName = intent.getStringExtra(EXTRA_GAME_NAME);
         String gamePicUrl = intent.getStringExtra(EXTRA_GAME_PICTURE_URL);
         String gameDeck = intent.getStringExtra(EXTRA_GAME_DECK);
@@ -95,9 +93,6 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         Picasso.get().load(gamePicUrl).into(ivPicture);
 
         loadGameDetails(guid);
-        pitchToZoom();
-        addToFavorites();
-
     }
 
     private void pitchToZoom() {
@@ -189,9 +184,10 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         String description = tvDescription.getText().toString();
         Bitmap image = ((BitmapDrawable)favImage.getDrawable()).getBitmap();
 
+        FavGame game = new FavGame(guid, gameName, gameDeck, description, image);
+
         DatabaseHelper databaseHelper = DatabaseHelper.createInstance(this);
-        databaseHelper.insertValues(guid, gameName, gameDeck, description, image);
+        databaseHelper.saveGame(game);
         addToFavButton.setBackground(getResources().getDrawable(R.drawable.ic_star_black_24dp));
     }
-
 }
