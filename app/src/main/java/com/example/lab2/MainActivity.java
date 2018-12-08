@@ -1,17 +1,16 @@
 package com.example.lab2;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import com.example.lab2.database.DatabaseHelper;
+import com.example.lab2.favorite.FavoriteFragment;
 import com.example.lab2.games.GamesFragment;
 import com.example.lab2.settings.SettingsFragment;
 
@@ -20,8 +19,9 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private DatabaseHelper databaseHelper;
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.bottomNavigation)
     BottomNavigationView bottomNavigationView;
 
@@ -32,19 +32,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         ButterKnife.bind(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-//        ConnectivityManager connMgr = (ConnectivityManager) MainActivity.this
-//                .getSystemService(Context.CONNECTIVITY_SERVICE);
-//        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        GamesFragment gamesFragment = new GamesFragment();
+        replaceFragment(gamesFragment);
 
-//        if (networkInfo != null && networkInfo.isConnected()) {
-//            if (savedInstanceState == null) {
-                GamesFragment gamesFragment = new GamesFragment();
-                replaceFragment(gamesFragment);
-            }
-//        } else {
-//            Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
-//        }
-//    }
+        databaseHelper = DatabaseHelper.createInstance(this);
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -56,9 +48,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.nav_games:
                 fragment = new GamesFragment();
                 break;
-//            case R.id.nav_favorite:
-//                fragment = new FavoriteFragment();
-//                break;
+            case R.id.nav_favorite:
+                fragment = new FavoriteFragment();
+                break;
             case R.id.nav_settings:
                 fragment = new SettingsFragment();
                 break;

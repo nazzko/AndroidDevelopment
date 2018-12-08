@@ -17,6 +17,14 @@
         android:visibility="invisible"
         android:textColor="@color/textPrimaryDark"/>
 
+    <TextView
+        android:id="@+id/record_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="-1"
+        android:textColor="@color/textPrimaryDark"/>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"

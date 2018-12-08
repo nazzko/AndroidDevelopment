@@ -21,6 +21,8 @@
         </activity>
 
         <activity android:name=".gamedetails.GameDetailsActivity" />
+        <activity android:name=".favgamedetails.FavGameDetailsActivity" />
     </application>
+
 
 </manifest>
