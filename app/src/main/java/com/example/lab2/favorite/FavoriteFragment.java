@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -22,13 +23,15 @@ import butterknife.ButterKnife;
 
 public class FavoriteFragment extends Fragment implements FavoritesAdapter.Callback{
 
-    private DatabaseHelper db;
+    private DatabaseHelper databaseHelper;
     private FavoritesAdapter favoritesAdapter = new FavoritesAdapter(this);
 
     @BindView(R.id.rvGames)
     RecyclerView rvGames;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.swipeContainer)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Nullable
     @Override
@@ -41,7 +44,14 @@ public class FavoriteFragment extends Fragment implements FavoritesAdapter.Callb
         ButterKnife.bind(this, view);
         toolbar.setTitle(R.string.favorite);
         setupRecyclerView(view);
-        loadRandomGames();
+        loadFavoriteGames();
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadFavoriteGames();
+            }
+        });
     }
 
     @Override
@@ -51,9 +61,10 @@ public class FavoriteFragment extends Fragment implements FavoritesAdapter.Callb
     }
 
 
-    private void loadRandomGames() {
-        db = DatabaseHelper.createInstance(getContext());
-        favoritesAdapter.replaceAll(db.getFavoriteGames());
+    private void loadFavoriteGames() {
+        databaseHelper = DatabaseHelper.createInstance(getContext());
+        favoritesAdapter.replaceAll(databaseHelper.getFavoriteGames());
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void setupRecyclerView(View view) {
