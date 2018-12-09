@@ -69,8 +69,20 @@ public class FavGameDetailsActivity extends AppCompatActivity implements View.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        ivPicture.setImageBitmap(game.getImage());
 
+        checkExist();
 //        pitchToZoom();
         addToFavorites();
+    }
+
+    private void checkExist() {
+        addToFavButton = findViewById(R.id.addToFavButton);
+        DatabaseHelper databaseHelper = DatabaseHelper.createInstance(this);
+        Intent intent = getIntent();
+        String guid = intent.getStringExtra(EXTRA_GAME_GUID);
+
+        if(databaseHelper.checkExist(guid)){
+            addToFavButton.setBackground(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+        }
     }
 
     private void pitchToZoom() {

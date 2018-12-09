@@ -111,8 +111,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean checkExist(String guid){
         Cursor cursor = null;
         SQLiteDatabase db = this.getWritableDatabase();
-        String sql ="SELECT " + COLUMN_ID + " FROM " + TABLE + " WHERE "+ COLUMN_ID +" =" + guid;
+        String sql ="SELECT " + COLUMN_ID + " FROM " + TABLE + " WHERE "+ COLUMN_ID +" = " + guid;
         cursor= db.rawQuery(sql,null);
+        Log.i("CHECKED", String.valueOf(cursor.getCount()));
 
         if(cursor.getCount()>0){
             cursor.close();
