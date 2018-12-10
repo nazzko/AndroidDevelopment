@@ -8,10 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.widget.TextView;
 
-import com.example.lab2.R;
-import com.example.lab2.gamedetails.GameDetailsActivity;
 import com.example.lab2.network.FavGame;
 
 import java.io.ByteArrayOutputStream;

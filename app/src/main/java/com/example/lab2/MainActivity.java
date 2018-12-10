@@ -6,13 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.lab2.database.DatabaseHelper;
-import com.example.lab2.favorite.FavoriteFragment;
-import com.example.lab2.games.GamesFragment;
-import com.example.lab2.settings.SettingsFragment;
+import com.example.lab2.fragments.FavoriteFragment;
+import com.example.lab2.fragments.GamesFragment;
+import com.example.lab2.fragments.SettingsFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

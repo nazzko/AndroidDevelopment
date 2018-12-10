@@ -20,8 +20,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".gamedetails.GameDetailsActivity" />
-        <activity android:name=".favgamedetails.FavGameDetailsActivity" />
+        <activity android:name=".activity.GameDetailsActivity" />
+        <activity android:name=".activity.FavGameDetailsActivity" />
     </application>
 
 

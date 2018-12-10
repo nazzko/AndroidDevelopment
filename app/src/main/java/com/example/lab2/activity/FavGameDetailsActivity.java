@@ -1,4 +1,4 @@
-package com.example.lab2.favgamedetails;
+package com.example.lab2.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,10 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.lab2.R;

@@ -1,4 +1,4 @@
-package com.example.lab2.favorite;
+package com.example.lab2.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.lab2.R;
+import com.example.lab2.adapters.FavoritesAdapter;
 import com.example.lab2.database.DatabaseHelper;
-import com.example.lab2.favgamedetails.FavGameDetailsActivity;
+import com.example.lab2.activity.FavGameDetailsActivity;
 import com.example.lab2.network.FavGame;
 
 import butterknife.BindView;

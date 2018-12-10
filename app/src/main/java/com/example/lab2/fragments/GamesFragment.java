@@ -1,4 +1,4 @@
-package com.example.lab2.games;
+package com.example.lab2.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,11 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.lab2.PrefsConst;
+import com.example.lab2.interfaces.PrefsConst;
 import com.example.lab2.R;
-import com.example.lab2.gamedetails.GameDetailsActivity;
+import com.example.lab2.adapters.GamesAdapter;
+import com.example.lab2.activity.GameDetailsActivity;
 import com.example.lab2.network.GbObjectResponse;
 import com.example.lab2.network.GbObjectsListResponse;
 import com.example.lab2.network.GiantBombService;

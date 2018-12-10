@@ -1,4 +1,4 @@
-package com.example.lab2.gamedetails;
+package com.example.lab2.activity;
 
 import android.content.Context;
 import android.content.Intent;

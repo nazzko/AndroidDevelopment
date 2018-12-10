@@ -1,4 +1,4 @@
-package com.example.lab2.favorite;
+package com.example.lab2.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

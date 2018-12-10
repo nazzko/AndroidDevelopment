@@ -1,4 +1,4 @@
-package com.example.lab2.settings;
+package com.example.lab2.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
-import com.example.lab2.PrefsConst;
+import com.example.lab2.interfaces.PrefsConst;
 import com.example.lab2.R;
 
 import java.util.Arrays;
@@ -22,7 +22,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class SettingsFragment extends Fragment {
 
