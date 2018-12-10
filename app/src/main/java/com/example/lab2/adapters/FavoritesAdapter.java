@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lab2.R;
-import com.example.lab2.network.FavGame;
+import com.example.lab2.entities.FavGame;
 
 import java.util.ArrayList;
 import java.util.List;

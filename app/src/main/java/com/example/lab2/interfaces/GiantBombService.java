@@ -1,4 +1,7 @@
-package com.example.lab2.network;
+package com.example.lab2.interfaces;
+
+import com.example.lab2.entities.GbObjectsListResponse;
+import com.example.lab2.entities.GbSingleObjectResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

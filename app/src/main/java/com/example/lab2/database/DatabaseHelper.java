@@ -9,7 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import com.example.lab2.network.FavGame;
+import com.example.lab2.entities.FavGame;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;

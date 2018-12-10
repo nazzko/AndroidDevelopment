@@ -1,4 +1,6 @@
-package com.example.lab2.network;
+package com.example.lab2.entities;
+
+import com.example.lab2.entities.Game;
 
 import java.util.List;
 

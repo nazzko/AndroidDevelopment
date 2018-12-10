@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.lab2.R;
 import com.example.lab2.database.DatabaseHelper;
-import com.example.lab2.network.FavGame;
+import com.example.lab2.entities.FavGame;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 

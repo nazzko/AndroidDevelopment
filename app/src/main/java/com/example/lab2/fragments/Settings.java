@@ -16,6 +16,7 @@ import android.widget.Spinner;
 
 import com.example.lab2.interfaces.PrefsConst;
 import com.example.lab2.R;
+import com.example.lab2.views.SettingsView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SettingsFragment extends Fragment {
+public class Settings extends Fragment implements SettingsView {
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor prefsEditor;
@@ -61,7 +62,7 @@ public class SettingsFragment extends Fragment {
         return optionsList.indexOf(String.valueOf(amount));
     }
 
-    private void setOnItemSelectedListeners() {
+    public void setOnItemSelectedListeners() {
         spGamesAmount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

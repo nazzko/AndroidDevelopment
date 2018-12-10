@@ -9,9 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.example.lab2.database.DatabaseHelper;
-import com.example.lab2.fragments.FavoriteFragment;
-import com.example.lab2.fragments.GamesFragment;
-import com.example.lab2.fragments.SettingsFragment;
+import com.example.lab2.fragments.Favorite;
+import com.example.lab2.fragments.Games;
+import com.example.lab2.fragments.Settings;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         ButterKnife.bind(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        GamesFragment gamesFragment = new GamesFragment();
+        Games gamesFragment = new Games();
         replaceFragment(gamesFragment);
 
         databaseHelper = DatabaseHelper.createInstance(this);
@@ -45,13 +45,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Fragment fragment;
         switch (item.getItemId()) {
             case R.id.nav_games:
-                fragment = new GamesFragment();
+                fragment = new Games();
                 break;
             case R.id.nav_favorite:
-                fragment = new FavoriteFragment();
+                fragment = new Favorite();
                 break;
             case R.id.nav_settings:
-                fragment = new SettingsFragment();
+                fragment = new Settings();
                 break;
             default:
                 fragment = new Fragment();

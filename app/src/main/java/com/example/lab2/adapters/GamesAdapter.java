@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lab2.R;
-import com.example.lab2.network.GbObjectResponse;
+import com.example.lab2.entities.GbObjectResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

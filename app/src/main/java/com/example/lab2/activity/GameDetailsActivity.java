@@ -21,10 +21,10 @@ import android.widget.Toast;
 
 import com.example.lab2.R;
 import com.example.lab2.database.DatabaseHelper;
-import com.example.lab2.network.FavGame;
-import com.example.lab2.network.GbObjectResponse;
-import com.example.lab2.network.GbSingleObjectResponse;
-import com.example.lab2.network.GiantBombService;
+import com.example.lab2.entities.FavGame;
+import com.example.lab2.entities.GbObjectResponse;
+import com.example.lab2.entities.GbSingleObjectResponse;
+import com.example.lab2.interfaces.GiantBombService;
 import com.example.lab2.network.RestApi;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
