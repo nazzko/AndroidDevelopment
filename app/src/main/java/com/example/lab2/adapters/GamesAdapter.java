@@ -1,4 +1,4 @@
-package com.example.lab2.games;
+package com.example.lab2.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lab2.R;
-import com.example.lab2.network.GbObjectResponse;
+import com.example.lab2.entities.GbObjectResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -18,7 +18,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> {
 

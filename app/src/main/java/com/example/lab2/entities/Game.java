@@ -1,4 +1,4 @@
-package com.example.lab2.network;
+package com.example.lab2.entities;
 
 public class Game {
 

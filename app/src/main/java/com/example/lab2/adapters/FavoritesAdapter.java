@@ -1,4 +1,4 @@
-package com.example.lab2.favorite;
+package com.example.lab2.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lab2.R;
-import com.example.lab2.network.FavGame;
+import com.example.lab2.entities.FavGame;
 
 import java.util.ArrayList;
 import java.util.List;

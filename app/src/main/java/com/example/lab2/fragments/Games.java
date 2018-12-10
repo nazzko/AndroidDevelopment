@@ -1,4 +1,4 @@
-package com.example.lab2.games;
+package com.example.lab2.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,15 +16,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.lab2.PrefsConst;
+import com.example.lab2.interfaces.PrefsConst;
 import com.example.lab2.R;
-import com.example.lab2.gamedetails.GameDetailsActivity;
-import com.example.lab2.network.GbObjectResponse;
-import com.example.lab2.network.GbObjectsListResponse;
-import com.example.lab2.network.GiantBombService;
+import com.example.lab2.adapters.GamesAdapter;
+import com.example.lab2.activity.GameDetailsActivity;
+import com.example.lab2.entities.GbObjectResponse;
+import com.example.lab2.entities.GbObjectsListResponse;
+import com.example.lab2.interfaces.GiantBombService;
+import com.example.lab2.models.GamesModel;
+import com.example.lab2.models.GamesModelImpl;
 import com.example.lab2.network.RestApi;
+import com.example.lab2.presenters.GamesPresenter;
+import com.example.lab2.presenters.GamesPresenterImpl;
+import com.example.lab2.views.GamesView;
 
 import java.util.Random;
 
@@ -34,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GamesFragment extends Fragment implements GamesAdapter.Callback {
+public class Games extends Fragment implements GamesAdapter.Callback, GamesView {
 
     private static final String EXTRA_GAME_GUID = "EXTRA_GAME_GUID";
     private static final int TOTAL_GAMES_COUNT = 64131;
@@ -54,10 +59,13 @@ public class GamesFragment extends Fragment implements GamesAdapter.Callback {
     Toolbar toolbar;
     @BindView(R.id.net_error)
     public TextView net_error;
+    private GamesPresenter mPresenter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        createPresenter();
+        mPresenter.onCreate();
         return inflater.inflate(R.layout.fragment_games, container, false);
     }
 
@@ -91,34 +99,8 @@ public class GamesFragment extends Fragment implements GamesAdapter.Callback {
         startActivity(intent);
     }
 
-    private void loadRandomGames() {
-        if (call != null && call.isExecuted()) {
-            return;
-        }
-        int offset = random.nextInt(TOTAL_GAMES_COUNT - gamesAmount + 1);
-        call = service.getGames(gamesAmount, offset);
-        //noinspection ConstantConditions
-        call.enqueue(new Callback<GbObjectsListResponse>() {
-            @Override
-            public void onResponse(Call<GbObjectsListResponse> call, Response<GbObjectsListResponse> response) {
-                GamesFragment.this.call = call.clone();
-                GbObjectsListResponse gbObjectsListResponse = response.body();
-                if (gbObjectsListResponse != null) {
-                    adapter.replaceAll(gbObjectsListResponse.getResults());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<GbObjectsListResponse> call, Throwable t) {
-                GamesFragment.this.call = call.clone();
-                if (!call.isCanceled()) {
-                    net_error.setVisibility(net_error.VISIBLE);
-                }
-            }
-        });
-    }
-
-    private void setupRecyclerView(View view) {
+    public void setupRecyclerView(View view) {
         ButterKnife.bind(this, view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvGames.setLayoutManager(layoutManager);
@@ -131,6 +113,11 @@ public class GamesFragment extends Fragment implements GamesAdapter.Callback {
         if (call != null) {
             call.cancel();
         }
+    }
+
+    private void createPresenter() {
+//        GamesModel model = new GamesModelImpl(getActivity().getApplication());
+        mPresenter = new GamesPresenterImpl(this, model);
     }
 
 }

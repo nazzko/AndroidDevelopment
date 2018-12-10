@@ -1,4 +1,7 @@
-package com.example.lab2.network;
+package com.example.lab2.interfaces;
+
+import com.example.lab2.entities.GbObjectsListResponse;
+import com.example.lab2.entities.GbSingleObjectResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -12,5 +15,4 @@ public interface GiantBombService {
 
     @GET("game/{guid}/?api_key=0a80e1bbb07356d3658e6413b066b13824764567&format=json&field_list=description")
     Call<GbSingleObjectResponse> getGameDetails(@Path("guid") String guid);
-
 }

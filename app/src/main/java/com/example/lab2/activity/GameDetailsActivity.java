@@ -1,4 +1,4 @@
-package com.example.lab2.gamedetails;
+package com.example.lab2.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,10 +21,10 @@ import android.widget.Toast;
 
 import com.example.lab2.R;
 import com.example.lab2.database.DatabaseHelper;
-import com.example.lab2.network.FavGame;
-import com.example.lab2.network.GbObjectResponse;
-import com.example.lab2.network.GbSingleObjectResponse;
-import com.example.lab2.network.GiantBombService;
+import com.example.lab2.entities.FavGame;
+import com.example.lab2.entities.GbObjectResponse;
+import com.example.lab2.entities.GbSingleObjectResponse;
+import com.example.lab2.interfaces.GiantBombService;
 import com.example.lab2.network.RestApi;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
@@ -48,6 +48,7 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
     private ViewGroup vgContent;
     private TextView tvDescription;
     public ImageView favImage;
+    DatabaseHelper databaseHelper = DatabaseHelper.createInstance(this);
 
     @Nullable private Call<GbSingleObjectResponse> call;
     private Button addToFavButton;
@@ -71,6 +72,16 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
         setAttributes();
         pitchToZoom();
         addToFavorites();
+        checkExist();
+    }
+
+    private void checkExist() {
+        Intent intent = getIntent();
+        String guid = intent.getStringExtra(EXTRA_GAME_GUID);
+
+        if(databaseHelper.checkExist(guid)){
+            addToFavButton.setBackground(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+        }
     }
 
     private void setAttributes(){
@@ -186,7 +197,6 @@ public class GameDetailsActivity extends AppCompatActivity implements View.OnCli
 
         FavGame game = new FavGame(guid, gameName, gameDeck, description, image);
 
-        DatabaseHelper databaseHelper = DatabaseHelper.createInstance(this);
         databaseHelper.saveGame(game);
         addToFavButton.setBackground(getResources().getDrawable(R.drawable.ic_star_black_24dp));
     }

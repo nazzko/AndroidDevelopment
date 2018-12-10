@@ -8,11 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.widget.TextView;
 
-import com.example.lab2.R;
-import com.example.lab2.gamedetails.GameDetailsActivity;
-import com.example.lab2.network.FavGame;
+import com.example.lab2.entities.FavGame;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -111,8 +108,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean checkExist(String guid){
         Cursor cursor = null;
         SQLiteDatabase db = this.getWritableDatabase();
-        String sql ="SELECT " + COLUMN_ID + " FROM " + TABLE + " WHERE "+ COLUMN_ID +" =" + guid;
+        String sql ="SELECT " + COLUMN_ID + " FROM " + TABLE + " WHERE "+ COLUMN_ID +" = " + guid;
         cursor= db.rawQuery(sql,null);
+        Log.i("CHECKED", String.valueOf(cursor.getCount()));
 
         if(cursor.getCount()>0){
             cursor.close();
